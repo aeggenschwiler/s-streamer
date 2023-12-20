@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:compression="http://www.mulesoft.org/schema/mule/compression"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/compression http://www.mulesoft.org/schema/mule/compression/current/mule-compression.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cca1e15e-889b-45b6-9823-d591acff5fcb">
+		<http:request-connection host="localhost" port="8091" />
+	</http:request-config>
+	<flow name="s-filestreamFlow" >
+		<file:listener doc:name="On New or Updated File" doc:id="62adee85-4161-4903-b1e4-d1ca1e9a0923" outputMimeType="text/csv; streaming=true; header=true" recursive="false" timeBetweenSizeCheck="1" timeBetweenSizeCheckUnit="SECONDS" directory="/tmp/fileStream/in " overwrite="true" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="'start'" doc:id="92e79e9b-7d8e-4402-94e0-f47cd4ae73f0" message="#['start']" />
+		<ee:transform doc:name="filter != 7" doc:id="baa8f7de-6bc7-404d-b3cd-8fe893ef072a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+input payload text/csv
+output text/csv deferred=true
+---
+payload filter $.iLine as Number != 7
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="2d5745e9-7c4b-43a2-b258-8da899dd956f" config-ref="HTTP_Request_configuration" path="/" responseTimeout="600000" requestStreamingMode="ALWAYS" outputMimeType="text/csv; streaming=true" sendBodyMode="AUTO">
+		</http:request>
+		<logger level="INFO" doc:name="'done.'" doc:id="f936e02e-d9b5-4a10-9d75-cdd60d99fc99" message="#['done.']"/>
+	</flow>
+</mule>
