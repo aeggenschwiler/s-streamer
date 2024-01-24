@@ -1,0 +1,32 @@
+= Using Mule for streaming large CSV datasets
+
+== Summary
+
+This repository provides a Mule app for HTTP streaming of large CSV datasets.
+
+The Mule application reads a CSV file from the file system and uses HTTP streaming to send it to another Mule app for processing.
+
+== Configuration
+
+A help article advises to set the "mule.http.requestStreaming.enable" property: https://help.mulesoft.com/s/article/How-To-Enable-Streaming-with-Salesforce-Create-Bulk-API-Job-v2
+
+Setting this property was however not necessary with this app and its downstream app using Mule 4.5.3, max heap size 512m and a 2.7G dataset. 
+
+== Creating input datasets
+
+The Groovy script below can create large CSV datasets:
+
+....
+def BigInteger numLines = args[0] as BigInteger
+println "iLine,first,last"
+for (BigInteger i = 1; i < numLines+1; i ++) {
+  println String.format ("%d,f%d,l%d",i,i,i)}
+....
+
+The script receives the desire number of lines as an argument and writes the CSV file to STDOUT:
+
+ $ groovy mkNmbs.groovy 100000000 > /tmp/fileStream/in/100000000.csv
+
+The command above 100 m lines, which results in a 2.7 G dataset.
+
+
