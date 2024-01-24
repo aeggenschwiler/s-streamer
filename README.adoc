@@ -27,6 +27,7 @@ The script receives the desire number of lines as an argument and writes the CSV
 
  $ groovy mkNmbs.groovy 100000000 > /tmp/fileStream/in/100000000.csv
 
-The command above 100 m lines, which results in a 2.7 G dataset.
+The command above creats a CSV file with 100 m lines. The resulting file size was 2.7 G.
+
 
 
