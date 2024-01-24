@@ -6,6 +6,8 @@ This repository provides a Mule app for HTTP streaming of large CSV datasets.
 
 The Mule application reads a CSV file from the file system and uses HTTP streaming to send it to another Mule app for processing.
 
+The CSV datacan be consumed by the compaion "s-writer" app.
+
 == Configuration
 
 A help article advises to set the "mule.http.requestStreaming.enable" property: https://help.mulesoft.com/s/article/How-To-Enable-Streaming-with-Salesforce-Create-Bulk-API-Job-v2
