@@ -7,8 +7,8 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/compression http://www.mulesoft.org/schema/mule/compression/current/mule-compression.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cca1e15e-889b-45b6-9823-d591acff5fcb">
-		<http:request-connection host="localhost" port="8091" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cca1e15e-889b-45b6-9823-d591acff5fcb" basePath="/in">
+		<http:request-connection host="localhost" port="8081" />
 	</http:request-config>
 	<flow name="s-filestreamFlow" >
 		<file:listener doc:name="On New or Updated File" doc:id="62adee85-4161-4903-b1e4-d1ca1e9a0923" outputMimeType="text/csv; streaming=true; header=true" recursive="false" timeBetweenSizeCheck="1" timeBetweenSizeCheckUnit="SECONDS" directory="/tmp/fileStream/in " overwrite="true" autoDelete="true">

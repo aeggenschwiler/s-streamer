@@ -28,3 +28,4 @@ replay_pid*
 .tooling-project
 .metadata/**
 .mule/**
+/target/
